@@ -1,20 +1,22 @@
 version: 0.2
 
+env:
+  variables:
+    AWS_REGION: "ap-south-1"
+    SAGEMAKER_ROLE_ARN: "arn:aws:iam::<ACCOUNT_ID>:role/SageMakerExecutionRole-AgriAI" # replace
+    S3_TRAINING_URI: "s3://agri-ai-dataset-<id>/data/"
+    S3_OUTPUT_URI: "s3://agri-ai-dataset-<id>/output/"
+
 phases:
   install:
     runtime-versions:
-      python: 3.8
+      python: 3.10
     commands:
       - pip install --upgrade pip
-      - pip install boto3 sagemaker torch torchvision --no-cache-dir
-  pre_build:
-    commands:
-      - echo "Pre-build: show python version"
-      - python --version
+      - pip install -r requirements.txt
   build:
     commands:
-      - echo "Packaging and uploading training code"
-      - python trigger_training.py --bucket $S3_BUCKET --region $AWS_DEFAULT_REGION --role $SAGEMAKER_ROLE
+      - echo "Triggering SageMaker training job..."
+      - python trigger_training.py
 artifacts:
-  files:
-    - '**/*'
+  files: []

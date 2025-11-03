@@ -1,6 +1,5 @@
-torch>=1.13
-torchvision
 boto3
 sagemaker
 numpy
-Pillow
+pandas
+scikit-learn
